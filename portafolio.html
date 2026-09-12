@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Tu Nombre] — Diseño Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15171B;
+    --ink-soft:#1F2228;
+    --paper:#ECE8E1;
+    --paper-dim:#DAD5CB;
+    --ember:#E85D04;
+    --moss:#45694F;
+    --muted:#8B877D;
+    --line: rgba(21,23,27,0.14);
+    --line-light: rgba(236,232,225,0.16);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+
+  /* NAV */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(236,232,225,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{
+    font-family:var(--font-mono);
+    font-size:0.95rem;
+    font-weight:500;
+  }
+  .logo span{color:var(--ember);}
+  .nav-links{display:flex;gap:28px;list-style:none;font-size:0.92rem;}
+  .nav-links a{text-decoration:none;position:relative;padding-bottom:3px;}
+  .nav-links a:hover{color:var(--ember);}
+  .nav-toggle{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--ink);}
+
+  @media(max-width:640px){
+    .nav-links{
+      display:none;
+      position:absolute;top:100%;left:0;right:0;
+      background:var(--paper);
+      flex-direction:column;
+      padding:16px 28px 24px;
+      border-bottom:1px solid var(--line);
+      gap:16px;
+    }
+    .nav-links.open{display:flex;}
+    .nav-toggle{display:block;}
+  }
+
+  /* HERO */
+  .hero{
+    padding:72px 0 64px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+  }
+  @media(max-width:800px){ .hero{grid-template-columns:1fr;padding:48px 0;} }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--moss);
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:var(--font-display);
+    font-size:clamp(2.1rem, 5vw, 3.4rem);
+    font-weight:700;
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  h1 em{color:var(--ember);font-style:normal;}
+  .hero p.lead{
+    margin-top:20px;
+    font-size:1.08rem;
+    color:#3A3D42;
+    max-width:46ch;
+  }
+  .hero-cta{
+    margin-top:32px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:13px 24px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.95rem;
+    text-decoration:none;
+    border-radius:3px;
+    border:1.5px solid var(--ink);
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper);}
+  .btn-primary:hover{background:var(--ember);border-color:var(--ember);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--ink);}
+  .btn-ghost:hover{transform:translateY(-2px);}
+
+  /* TERMINAL MOCKUP */
+  .terminal{
+    background:var(--ink);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 20px 40px -18px rgba(21,23,27,0.5);
+  }
+  .terminal-bar{
+    display:flex;gap:7px;
+    padding:12px 16px;
+    background:var(--ink-soft);
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot:nth-child(1){background:#E85D04;}
+  .dot:nth-child(2){background:#DAD5CB;opacity:0.5;}
+  .dot:nth-child(3){background:#45694F;}
+  .terminal-body{
+    padding:22px 20px 28px;
+    font-family:var(--font-mono);
+    font-size:0.86rem;
+    color:var(--paper);
+    min-height:200px;
+  }
+  .terminal-body .line{color:var(--paper-dim);}
+  .terminal-body .prompt{color:var(--ember);}
+  .terminal-body .cursor{
+    display:inline-block;width:7px;height:1em;
+    background:var(--paper);
+    vertical-align:text-bottom;
+    animation:blink 1s step-start infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  /* SECTIONS */
+  section{padding:64px 0;border-top:1px solid var(--line);}
+  .section-head{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  h2{
+    font-family:var(--font-display);
+    font-size:clamp(1.5rem, 3vw, 2.1rem);
+    font-weight:600;
+    max-width:32ch;
+  }
+  .section-intro{margin-top:14px;color:#3A3D42;max-width:56ch;}
+
+  /* SOBRE MI */
+  .about-grid{
+    margin-top:36px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  @media(max-width:700px){.about-grid{grid-template-columns:1fr;}}
+  .about-card{
+    border-left:2px solid var(--ember);
+    padding-left:18px;
+  }
+  .about-card h3{
+    font-family:var(--font-display);
+    font-size:1rem;
+    margin-bottom:8px;
+  }
+  .about-card p{font-size:0.92rem;color:#3A3D42;}
+
+  /* PROYECTOS */
+  .project-row{
+    border-bottom:1px solid var(--line);
+    padding:26px 0;
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:baseline;
+    gap:12px;
+    position:relative;
+    text-decoration:none;
+    color:inherit;
+  }
+  .project-row:first-of-type{border-top:1px solid var(--line);}
+  .project-row::before{
+    content:"";
+    position:absolute;left:-28px;top:0;bottom:0;
+    width:3px;background:var(--ember);
+    transform:scaleY(0);
+    transform-origin:top;
+    transition:transform 0.2s ease;
+  }
+  .project-row:hover::before{transform:scaleY(1);}
+  .project-row:hover .p-title{color:var(--ember);}
+  .p-title{
+    font-family:var(--font-display);
+    font-size:1.15rem;
+    font-weight:600;
+    transition:color 0.15s ease;
+  }
+  .p-desc{font-size:0.9rem;color:var(--muted);margin-top:4px;}
+  .p-tags{font-family:var(--font-mono);font-size:0.8rem;color:var(--muted);white-space:nowrap;}
+
+  /* SERVICIOS */
+  .services{
+    margin-top:36px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media(max-width:700px){.services{grid-template-columns:1fr;}}
+  .service{
+    background:var(--paper);
+    padding:26px;
+  }
+  .service h3{
+    font-family:var(--font-display);
+    font-size:1.05rem;
+    margin-bottom:8px;
+  }
+  .service p{font-size:0.9rem;color:#3A3D42;}
+  .service .price{
+    display:block;margin-top:14px;
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--moss);
+  }
+
+  /* CONTACTO */
+  .contact-box{
+    margin-top:36px;
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:8px;
+    padding:40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .contact-box h3{
+    font-family:var(--font-display);
+    font-size:1.4rem;
+    max-width:22ch;
+  }
+  .contact-box .btn-primary{background:var(--ember);border-color:var(--ember);color:var(--ink);}
+  .contact-box .btn-primary:hover{background:var(--paper);border-color:var(--paper);}
+
+  footer{
+    padding:32px 0 48px;
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo">[tu-nombre]<span>.dev</span></div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero" style="border-top:none;">
+      <div>
+        <p class="eyebrow">Diseño y desarrollo web · Nicaragua</p>
+        <h1>Le construyo la web a tu negocio, <em>sin vueltas.</em></h1>
+        <p class="lead">Soy [Tu Nombre], desarrollador web independiente. Hago páginas rápidas, simples y hechas a mano para negocios que todavía no tienen presencia en internet — o que la tienen y quieren una mejor.</p>
+        <div class="hero-cta">
+          <a href="#contacto" class="btn btn-primary">Pedime tu página</a>
+          <a href="#proyectos" class="btn btn-ghost">Ver proyectos</a>
+        </div>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="terminal-body" id="typedTerminal"></div>
+      </div>
+    </section>
+
+    <section id="sobre-mi">
+      <p class="section-head">01 · quién soy</p>
+      <h2>Aprendiendo rápido, entregando en serio.</h2>
+      <p class="section-intro">No prometo lo que no puedo cumplir. Trabajo con lo que sé hacer bien — HTML, CSS y JavaScript — y lo aplico a algo que las pequeñas empresas necesitan de verdad: una página que se vea bien y funcione en el celular.</p>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Directo al grano</h3>
+          <p>Sin relleno ni plantillas genéricas. Cada página se piensa para el negocio que la pide.</p>
+        </div>
+        <div class="about-card">
+          <h3>Responde rápido</h3>
+          <p>Contesto por WhatsApp el mismo día. Nada de esperar semanas por una respuesta.</p>
+        </div>
+        <div class="about-card">
+          <h3>Precio claro</h3>
+          <p>Te digo el costo antes de empezar. Sin sorpresas ni cobros extra a mitad de camino.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="proyectos">
+      <p class="section-head">02 · trabajo</p>
+      <h2>Proyectos</h2>
+      <p class="section-intro">Edita esta lista con tus propios trabajos a medida que los hagas. Empezá aunque sea con un proyecto propio o uno gratis para un conocido — lo importante es que exista.</p>
+
+      <a href="#" class="project-row">
+        <div>
+          <div class="p-title">[Nombre del negocio] — página de presentación</div>
+          <div class="p-desc">Landing page de una sola página con información, horarios y contacto por WhatsApp.</div>
+        </div>
+        <div class="p-tags">HTML · CSS · JS</div>
+      </a>
+      <a href="#" class="project-row">
+        <div>
+          <div class="p-title">[Proyecto personal]</div>
+          <div class="p-desc">Descripción corta de qué resolviste y por qué lo hiciste.</div>
+        </div>
+        <div class="p-tags">HTML · CSS</div>
+      </a>
+      <a href="#" class="project-row">
+        <div>
+          <div class="p-title">[Tu próximo proyecto]</div>
+          <div class="p-desc">Este espacio es tuyo. Súmalo apenas termines algo nuevo.</div>
+        </div>
+        <div class="p-tags">Próximamente</div>
+      </a>
+    </section>
+
+    <section id="servicios">
+      <p class="section-head">03 · qué ofrezco</p>
+      <h2>Servicios</h2>
+      <div class="services">
+        <div class="service">
+          <h3>Página de presentación</h3>
+          <p>Una sola página con información del negocio, servicios, ubicación y contacto directo.</p>
+          <span class="price">Ideal para pulperías, salones, gimnasios</span>
+        </div>
+        <div class="service">
+          <h3>Página con varias secciones</h3>
+          <p>Inicio, servicios, galería y contacto, todo en un sitio ordenado y fácil de navegar.</p>
+          <span class="price">Ideal para negocios en crecimiento</span>
+        </div>
+        <div class="service">
+          <h3>Formulario de contacto</h3>
+          <p>Que los clientes te escriban directo desde la página, sin salir de ahí.</p>
+          <span class="price">Se agrega a cualquier plan</span>
+        </div>
+        <div class="service">
+          <h3>Mantenimiento básico</h3>
+          <p>Cambios de texto, fotos o precios cuando el negocio lo necesite.</p>
+          <span class="price">Por encargo</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <p class="section-head">04 · hablemos</p>
+      <div class="contact-box">
+        <h3>¿Tenés un negocio y no tenés página? Escribime.</h3>
+        <a href="https://wa.me/505XXXXXXXX" class="btn btn-primary" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <footer>
+      <span>[Tu Nombre] · Nicaragua</span>
+      <span>hecho a mano, sin plantillas</span>
+    </footer>
+  </div>
+</main>
+
+<script>
+  // Menú móvil
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Efecto de "escritura" en la terminal del hero
+  const linesToType = [
+    { prompt: '$ ', text: 'whoami' },
+    { prompt: '', text: '[Tu Nombre] — desarrollador web' },
+    { prompt: '$ ', text: 'skills --list' },
+    { prompt: '', text: 'HTML · CSS · JavaScript' },
+    { prompt: '$ ', text: 'disponibilidad' },
+    { prompt: '', text: 'abierto a nuevos proyectos ✓' },
+  ];
+  const el = document.getElementById('typedTerminal');
+  let li = 0, ci = 0;
+
+  function typeNext(){
+    if(li >= linesToType.length){
+      el.innerHTML += '<br><span class="prompt">$ </span><span class="cursor"></span>';
+      return;
+    }
+    const current = linesToType[li];
+    if(ci === 0){
+      el.innerHTML += (li>0 ? '<br>' : '') + '<span class="' + (current.prompt ? 'prompt' : 'line') + '">' + current.prompt + '</span>';
+    }
+    if(ci < current.text.length){
+      el.innerHTML += current.text[ci];
+      ci++;
+      setTimeout(typeNext, 22);
+    } else {
+      li++; ci = 0;
+      setTimeout(typeNext, 260);
+    }
+  }
+  typeNext();
+</script>
+
+</body>
+</html>
